@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'coin_data.dart';
+import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -6,7 +9,49 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  String currencyShow;
+  String currencyShow = 'USD';
+
+  DropdownButton<String> androidList() {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    for (String currency in currenciesList) {
+      var newItem = DropdownMenuItem(
+        child: Text(currency),
+        value: currency,
+      );
+      dropdownItems.add(newItem);
+    }
+
+    return DropdownButton<String>(
+      value: currencyShow,
+      items: dropdownItems,
+      onChanged: (value) {
+        setState(
+          () {
+            currencyShow = value;
+          },
+        );
+      },
+    );
+  }
+
+  CupertinoPicker IOSPicker() {
+    List<Widget> cupertinoListTotal = [];
+    for (String currency in currenciesList) {
+      cupertinoListTotal.add(
+        Text(
+          currency,
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    }
+    return CupertinoPicker(
+      backgroundColor: Colors.grey.shade900,
+      itemExtent: 32,
+      onSelectedItemChanged: (selectedIndex) {},
+      children: cupertinoListTotal,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,31 +105,11 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.grey.shade900,
-            child: DropdownButton(
-              value: currencyShow,
-              items: [
-                DropdownMenuItem(
-                  child: Text('Dolar'),
-                  value: 'Dolar',
-                ),
-                DropdownMenuItem(
-                  child: Text('Euro'),
-                  value: 'Euro',
-                ),
-                DropdownMenuItem(
-                  child: Text('TL'),
-                  value: 'TL',
-                )
-              ],
-              onChanged: (value) {
-                setState(() {
-                  currencyShow = value;
-                });
-              },
-            ),
+            child: Platform.isIOS ? IOSPicker() : androidList(),
           ),
         ],
       ),
     );
   }
 }
+//
