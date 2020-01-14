@@ -33,38 +33,18 @@ const List<String> cryptoList = [
   'LTC',
 ];
 
-// class CoinData {
-//   Future getCoinData() async {
-//     NetworkHelper networkHelper = NetworkHelper('$tickerURL/BTCUSD');
-
-//     var coinData = await networkHelper.getData();
-
-//     print(coinData);
-//     return coinData;
-//   }
-// }
-
-// class NetworkHelper {
-//   NetworkHelper(this.url);
-//   final String url;
-
-//   Future getData() async {
-//     http.Response response = await http.get(url);
-//     var data = response.body;
-//     return jsonDecode(data);
-//   }
-// }
-
-// * Yukardaki Networkhelper ve Coinhelper classlarının tek sefer hali
-
 class CoinData {
   Future getData(String selectedCurrency) async {
-    http.Response response = await http.get('$tickerURL/BTC$selectedCurrency');
+    Map<String, String> cryptoPrices = {};
+    for (String crypto in cryptoList) {
+      http.Response response =
+          await http.get('$tickerURL/$crypto$selectedCurrency');
 
-    var coinData = jsonDecode(response.body);
+      var coinData = jsonDecode(response.body);
 
-    double lastPrice = coinData['last'];
-
-    return lastPrice.toStringAsFixed(0);
+      double lastPrice = coinData['last'];
+      cryptoPrices[crypto] = lastPrice.toStringAsFixed(0);
+    }
+    return cryptoPrices;
   }
 }
