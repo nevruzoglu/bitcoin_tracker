@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+const tickerURL = 'https://apiv2.bitcoinaverage.com/indices/global/ticker';
+
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -32,7 +34,18 @@ const List<String> cryptoList = [
 ];
 
 class CoinData {
-  CoinData(this.url);
+  Future getCoinData() async {
+    NetworkHelper networkHelper = NetworkHelper('$tickerURL/BTCUSD');
+
+    var coinData = await networkHelper.getData();
+
+    print(coinData);
+    return coinData;
+  }
+}
+
+class NetworkHelper {
+  NetworkHelper(this.url);
   final String url;
 
   Future getData() async {
@@ -41,3 +54,14 @@ class CoinData {
     return jsonDecode(response.body);
   }
 }
+
+// * Yukardaki Networkhelper ve Coinhelper classlarının tek sefer hali
+// class NetworkHelper {
+//   Future getData() async {
+//     http.Response response = await http.get('$tickerURL/BTCUSD');
+
+//     var coinData = await jsonDecode(response.body);
+
+//     print(coinData);
+//   }
+// }

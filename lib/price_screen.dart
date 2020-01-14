@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'dart:io' show Platform;
 
-const tickerURL = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/';
-
-class ShowCoinData {}
-
 class PriceScreen extends StatefulWidget {
   @override
   _PriceScreenState createState() => _PriceScreenState();
@@ -57,6 +53,11 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    CoinData().getCoinData();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
