@@ -33,35 +33,38 @@ const List<String> cryptoList = [
   'LTC',
 ];
 
-class CoinData {
-  Future getCoinData() async {
-    NetworkHelper networkHelper = NetworkHelper('$tickerURL/BTCUSD');
+// class CoinData {
+//   Future getCoinData() async {
+//     NetworkHelper networkHelper = NetworkHelper('$tickerURL/BTCUSD');
 
-    var coinData = await networkHelper.getData();
-
-    print(coinData);
-    return coinData;
-  }
-}
-
-class NetworkHelper {
-  NetworkHelper(this.url);
-  final String url;
-
-  Future getData() async {
-    http.Response response = await http.get(url);
-
-    return jsonDecode(response.body);
-  }
-}
-
-// * Yukardaki Networkhelper ve Coinhelper classlarının tek sefer hali
-// class NetworkHelper {
-//   Future getData() async {
-//     http.Response response = await http.get('$tickerURL/BTCUSD');
-
-//     var coinData = await jsonDecode(response.body);
+//     var coinData = await networkHelper.getData();
 
 //     print(coinData);
+//     return coinData;
 //   }
 // }
+
+// class NetworkHelper {
+//   NetworkHelper(this.url);
+//   final String url;
+
+//   Future getData() async {
+//     http.Response response = await http.get(url);
+//     var data = response.body;
+//     return jsonDecode(data);
+//   }
+// }
+
+// * Yukardaki Networkhelper ve Coinhelper classlarının tek sefer hali
+
+class CoinData {
+  Future getData(String selectedCurrency) async {
+    http.Response response = await http.get('$tickerURL/BTC$selectedCurrency');
+
+    var coinData = jsonDecode(response.body);
+
+    double lastPrice = coinData['last'];
+
+    return lastPrice.toStringAsFixed(0);
+  }
+}
