@@ -48,7 +48,6 @@ class _PriceScreenState extends State<PriceScreen> {
       backgroundColor: Colors.grey.shade900,
       itemExtent: 32,
       onSelectedItemChanged: (selectedIndex) {
-        print(selectedIndex);
         setState(() {
           selectedCurrency = currenciesList[selectedIndex];
           getData();
